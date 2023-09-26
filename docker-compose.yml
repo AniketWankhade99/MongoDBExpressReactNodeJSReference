@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend # Replace with the actual path to your frontend code
+    ports:
+      - "80:80"
+    environment:
+      - PORT=80
+      - RESTREVIEWS_DB_URI=mysql://aniket:password@mongodb:27017/sample_restaurant 
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend # Replace with the actual path to your backend code
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production # Set your desired environment variables
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb-container
+    ports:
+      - "27017:27017" # Adjust the port as needed
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: aniket
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongodb-data:/data/db
+
+volumes:
+  mongodb-data:
+
